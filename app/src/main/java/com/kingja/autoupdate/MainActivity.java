@@ -14,6 +14,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UpdateManager.Builder builder = new UpdateManager.Builder(this);
-        builder.setCancleable(true).build().checkUpdate();
+        builder.setCancleable(false).build().checkUpdate();
     }
 }

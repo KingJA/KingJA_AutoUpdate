@@ -15,7 +15,7 @@ public class UpdateManager {
 
     public UpdateManager(Builder builder) {
         this.cancleable = builder.cancleable;
-        this.activity = activity;
+        this.activity = builder.activity;
     }
 
     public void checkUpdate() {
