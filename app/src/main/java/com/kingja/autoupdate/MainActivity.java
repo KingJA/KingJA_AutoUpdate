@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import lib.king.kupdate.Constants;
 import lib.king.kupdate.UpdateAsyncTask;
+import lib.king.kupdate.UpdateManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new UpdateAsyncTask(this).execute(Constants.APK_NAME);
+        UpdateManager.Builder builder = new UpdateManager.Builder(this);
+        builder.setCancleable(true).build().checkUpdate();
     }
 }

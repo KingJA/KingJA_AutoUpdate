@@ -1,9 +1,13 @@
 package lib.king.kupdate;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Description：TODO
@@ -13,9 +17,11 @@ import android.util.Log;
  */
 public class UpdateAsyncTask extends AsyncTask<String, Integer, Integer> {
     private Activity context;
+    private boolean cancleable;
 
-    public UpdateAsyncTask(Activity context) {
+    public UpdateAsyncTask(Activity context,boolean cancleable) {
         this.context = context;
+        this.cancleable = cancleable;
     }
 
     /**
@@ -45,8 +51,39 @@ public class UpdateAsyncTask extends AsyncTask<String, Integer, Integer> {
         super.onPostExecute(i);
         if (UpdateUtil.ifNeedUpdate(i, context)) {
             Log.e("onPostExecute", "需要更新: ");
-            Intent intent = new Intent(context, DownloadService.class);
-            context.startService(intent);
+            showAskDialog();
         }
+    }
+
+    /**
+     * 显示下载对话框
+     */
+    private void showAskDialog() {
+        //构造对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("软件版本更新");
+        builder.setMessage("检测到新版本，是否立即进行更新?");
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Toast.makeText(context,"进入后台更新",Toast.LENGTH_SHORT).show();
+              DownloadService.goService(context);
+            }
+        });
+        if (cancleable) {
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    System.exit(0);
+                }
+            });
+        }
+
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);//dialog弹出后会点击屏幕，dialog不消失；点击物理返回键dialog消失
+        dialog.setCancelable(false);//dialog弹出后会点击屏幕或物理返回键，dialog不消失
+        dialog.show();
     }
 }

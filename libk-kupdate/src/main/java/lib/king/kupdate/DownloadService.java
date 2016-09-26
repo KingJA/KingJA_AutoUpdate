@@ -1,6 +1,8 @@
 package lib.king.kupdate;
 
+import android.app.Activity;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -119,6 +121,11 @@ public class DownloadService extends IntentService {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
 
+    }
+
+    public static void goService(Context context) {
+        Intent intent = new Intent(context, DownloadService.class);
+        context.startService(intent);
     }
 
 }
