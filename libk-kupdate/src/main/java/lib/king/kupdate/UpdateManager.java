@@ -1,7 +1,6 @@
 package lib.king.kupdate;
 
 import android.app.Activity;
-import android.content.Context;
 
 /**
  * Description：TODO
@@ -19,8 +18,8 @@ public class UpdateManager {
     }
 
     public void checkUpdate() {
-        UpdateAsyncTask updateAsyncTask = new UpdateAsyncTask(activity,cancleable);
-        updateAsyncTask.execute(Constants.APK_NAME);
+        VersionTask versionTask = new VersionTask(activity,cancleable);
+        versionTask.execute(Constants.APK_NAME);
     }
 
     public static class Builder {

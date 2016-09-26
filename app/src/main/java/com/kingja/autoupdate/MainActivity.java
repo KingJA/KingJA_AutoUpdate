@@ -3,8 +3,6 @@ package com.kingja.autoupdate;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import lib.king.kupdate.Constants;
-import lib.king.kupdate.UpdateAsyncTask;
 import lib.king.kupdate.UpdateManager;
 
 public class MainActivity extends AppCompatActivity {

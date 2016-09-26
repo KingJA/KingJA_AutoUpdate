@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 /**
@@ -15,11 +18,13 @@ import android.widget.Toast;
  * Author:KingJA
  * Email:kingjavip@gmail.com
  */
-public class UpdateAsyncTask extends AsyncTask<String, Integer, Integer> {
+public class VersionTask extends AsyncTask<String, Integer, Integer> {
     private Activity context;
     private boolean cancleable;
+    private ProgressBar mPb;
+    private Dialog mDownloadDialog;
 
-    public UpdateAsyncTask(Activity context,boolean cancleable) {
+    public VersionTask(Activity context, boolean cancleable) {
         this.context = context;
         this.cancleable = cancleable;
     }
@@ -85,5 +90,22 @@ public class UpdateAsyncTask extends AsyncTask<String, Integer, Integer> {
         dialog.setCanceledOnTouchOutside(false);//dialog弹出后会点击屏幕，dialog不消失；点击物理返回键dialog消失
         dialog.setCancelable(false);//dialog弹出后会点击屏幕或物理返回键，dialog不消失
         dialog.show();
+    }
+
+    /**
+     * 显示软件下载对话框
+     */
+    private void showDownLoadDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("正在更新");
+        //给下载对话框增加进度条
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.progress_softupdate, null);
+        mPb = (ProgressBar) v.findViewById(R.id.progress_update);
+        builder.setView(v);
+        mDownloadDialog = builder.create();
+        mDownloadDialog.setCanceledOnTouchOutside(false);
+        mDownloadDialog.setCancelable(false);
+        mDownloadDialog.show();
     }
 }
