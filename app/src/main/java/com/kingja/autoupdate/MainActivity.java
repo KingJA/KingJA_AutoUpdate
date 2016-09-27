@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UpdateManager.Builder builder = new UpdateManager.Builder(this);
-        builder.setCancleUpdateable(false)
+        builder
+                .setUpdateCancleable(false)
                 .setShowDownloadDialog(true)
                 .setLoadStrategy(new WebServiceStrategy())
                 .setUpdateContent("V1.2.5:\n1.界面的美化\n" +

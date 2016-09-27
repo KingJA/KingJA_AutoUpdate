@@ -3,6 +3,7 @@ package lib.king.kupdate;
 import android.app.Activity;
 
 import lib.king.kupdate.strategy.LoadStrategy;
+import lib.king.kupdate.strategy.WebServiceStrategy;
 import lib.king.kupdate.task.VersionTask;
 
 /**
@@ -12,7 +13,9 @@ import lib.king.kupdate.task.VersionTask;
  * Email:kingjavip@gmail.com
  */
 public class UpdateManager {
-    private boolean cancleable;
+
+
+    private boolean updateCancleable;
     private boolean showDownloadDialog;
     private Activity activity;
     private LoadStrategy mLoadStrategy;
@@ -20,30 +23,34 @@ public class UpdateManager {
 
     public UpdateManager(Builder builder) {
         this.showDownloadDialog = builder.showDownloadDialog;
-        this.cancleable = builder.cancleable;
+        this.updateCancleable = builder.updateCancleable;
         this.activity = builder.activity;
         this.mLoadStrategy = builder.mLoadStrategy;
         this.updateContent = builder.updateContent;
     }
 
     public void checkUpdate() {
-        VersionTask versionTask = new VersionTask(activity, cancleable, showDownloadDialog, mLoadStrategy,updateContent);
+        VersionTask versionTask = new VersionTask(activity, updateCancleable, showDownloadDialog, mLoadStrategy, updateContent);
         versionTask.execute(Constants.APK_NAME);
     }
 
     public static class Builder {
         private Activity activity;
-        private boolean cancleable;
+        private boolean updateCancleable;
         private boolean showDownloadDialog;
         private LoadStrategy mLoadStrategy;
         private String updateContent;
 
         public Builder(Activity activity) {
             this.activity = activity;
+            updateCancleable =true;//默认可以取消更新
+            showDownloadDialog=true;//默认显示下载进度框
+            mLoadStrategy= new WebServiceStrategy();//默认用WebService下载
+            updateContent="更新内容";
         }
 
-        public Builder setCancleUpdateable(boolean cancleable) {
-            this.cancleable = cancleable;
+        public Builder setUpdateCancleable(boolean cancleable) {
+            this.updateCancleable = cancleable;
             return this;
         }
 

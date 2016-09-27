@@ -1,7 +1,8 @@
 package lib.king.kupdate.dialog;
 
-
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 import lib.king.kupdate.R;
 
 
-public class DialogDouble extends DialogBaseAlert {
+public class DialogDouble extends AlertDialog implements View.OnClickListener {
     private String message;
     private TextView tv_doubledialog_message;
     private RelativeLayout rl_doubledialog_left;
@@ -21,14 +22,20 @@ public class DialogDouble extends DialogBaseAlert {
     private OnDoubleClickListener onDoubleClickListener;
 
     public DialogDouble(Context context, String message, String leftString, String rightString) {
-        super(context);
-        this.context = context;
+        super(context, R.style.CustomAlertDialog);
         this.message = message;
         this.leftString = leftString;
         this.rightString = rightString;
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initView();
+        initEvent();
+        initData();
+    }
+
     public void initView() {
         setContentView(R.layout.dialog_double);
         tv_doubledialog_message = (TextView) findViewById(R.id.tv_message);
@@ -36,33 +43,25 @@ public class DialogDouble extends DialogBaseAlert {
         tv_doubledialog_right = (TextView) findViewById(R.id.tv_doubledialog_right);
         rl_doubledialog_left = (RelativeLayout) findViewById(R.id.rl_doubledialog_left);
         rl_doubledialog_right = (RelativeLayout) findViewById(R.id.rl_doubledialog_right);
-
-
     }
 
-    @Override
-    public void initNet() {
-
-    }
-
-    @Override
     public void initEvent() {
         rl_doubledialog_left.setOnClickListener(this);
         rl_doubledialog_right.setOnClickListener(this);
-
     }
 
-    @Override
     public void initData() {
         tv_doubledialog_message.setText(message);
         tv_doubledialog_left.setText(leftString);
         tv_doubledialog_right.setText(rightString);
-
     }
 
+    public void setOnDoubleClickListener(OnDoubleClickListener onDoubleClickListener) {
+        this.onDoubleClickListener = onDoubleClickListener;
+    }
 
     @Override
-    public void childClick(View v) {
+    public void onClick(View v) {
         if (v.getId() == R.id.rl_doubledialog_left) {
             dismiss();
             onDoubleClickListener.onLeft();
@@ -71,10 +70,6 @@ public class DialogDouble extends DialogBaseAlert {
             dismiss();
             onDoubleClickListener.onRight();
         }
-    }
-
-    public void setOnDoubleClickListener(OnDoubleClickListener onDoubleClickListener) {
-        this.onDoubleClickListener = onDoubleClickListener;
     }
 
     public interface OnDoubleClickListener {
