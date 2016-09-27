@@ -59,7 +59,6 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务
         try {
             URL url = new URL(urlStr);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
             urlConnection.setRequestMethod("GET");
             urlConnection.setDoOutput(false);
             urlConnection.setConnectTimeout(10 * 1000);
@@ -73,6 +72,7 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务
             int byteread = 0;
             in = urlConnection.getInputStream();
             File dir = Util.getCacheDirectory(context);
+            Log.e(TAG, "保存路径: "+dir.getAbsolutePath() );
             String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.length());
             apkFile = new File(dir, apkName);
             out = new FileOutputStream(apkFile);
