@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import lib.king.kupdate.Util;
+import lib.king.kupdate.dialog.DialogDouble;
 import lib.king.kupdate.strategy.LoadStrategy;
 
 /**
@@ -21,12 +22,14 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
     private boolean cancleable;
     private boolean showDownloadDialog;
     private LoadStrategy loadStrategy;
+    private String updateContent;
 
-    public VersionTask(Activity context, boolean updateCancleable,boolean showDownloadDialog,LoadStrategy loadStrategy) {
+    public VersionTask(Activity context, boolean updateCancleable,boolean showDownloadDialog,LoadStrategy loadStrategy,String updateContent) {
         this.context = context;
         this.cancleable = updateCancleable;
         this.showDownloadDialog = showDownloadDialog;
         this.loadStrategy = loadStrategy;
+        this.updateContent = updateContent;
     }
 
     @Override
@@ -49,29 +52,46 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
     }
 
     private void showAskDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("软件版本更新");
-        builder.setMessage("检测到新版本，是否立即进行更新?");
-        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+        DialogDouble dialogDouble = new DialogDouble(context, updateContent, "下次", "马上升级");
+        dialogDouble.setOnDoubleClickListener(new DialogDouble.OnDoubleClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-             new DownloadTask(context,showDownloadDialog).execute();
+            public void onLeft() {
+                System.exit(0);
+            }
+
+            @Override
+            public void onRight() {
+                new DownloadTask(context,showDownloadDialog).execute();
             }
         });
-        if (cancleable) {
-            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    System.exit(0);
-                }
-            });
-        }
-        Dialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(cancleable);
-        dialog.setCancelable(cancleable);
-        dialog.show();
+        dialogDouble.setCanceledOnTouchOutside(cancleable);
+        dialogDouble.setCancelable(cancleable);
+        dialogDouble.show();
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//        builder.setTitle("检测到版本更新");
+//        builder.setMessage(updateContent);
+//        builder.setPositiveButton("马上更新", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//             new DownloadTask(context,showDownloadDialog).execute();
+//            }
+//        });
+//        if (cancleable) {
+//            builder.setNegativeButton("下次", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                    System.exit(0);
+//                }
+//            });
+//        }
+//        Dialog dialog = builder.create();
+//        dialog.setCanceledOnTouchOutside(cancleable);
+//        dialog.setCancelable(cancleable);
+//        dialog.show();
     }
 
 }

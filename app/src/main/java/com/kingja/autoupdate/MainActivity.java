@@ -13,9 +13,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UpdateManager.Builder builder = new UpdateManager.Builder(this);
-        builder.setCancleable(false)
+        builder.setCancleUpdateable(false)
                 .setShowDownloadDialog(true)
                 .setLoadStrategy(new WebService())
+                .setUpdateContent("V1.2.5:\n1.界面的美化\n" +
+                        "2.登录模块的简略化\n" +
+                        "3.取消多次点赞功能，并加入了二次元点赞动画，非常绚丽\n" +
+                        "4.修补了一些小Bug\n" +
+                        "5.加入收藏功能")
                 .build()
                 .checkUpdate();
     }
