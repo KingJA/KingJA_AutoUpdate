@@ -36,6 +36,7 @@ final class StorageUtils {
     private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
 
     private StorageUtils() {
+
     }
 
     /**
@@ -55,7 +56,7 @@ final class StorageUtils {
             appCacheDir = context.getCacheDir();
         }
         if (appCacheDir == null) {
-            Log.w(Constants.TAG, "Can't define system cache directory! The app should be re-installed.");
+            Log.w("StorageUtils", "Can't define system cache directory! The app should be re-installed.");
         }
         return appCacheDir;
     }
@@ -66,13 +67,13 @@ final class StorageUtils {
         File appCacheDir = new File(new File(dataDir, context.getPackageName()), "cache");
         if (!appCacheDir.exists()) {
             if (!appCacheDir.mkdirs()) {
-                Log.w(Constants.TAG, "Unable to create external cache directory");
+                Log.w("StorageUtils", "Unable to create external cache directory");
                 return null;
             }
             try {
                 new File(appCacheDir, ".nomedia").createNewFile();
             } catch (IOException e) {
-                Log.i(Constants.TAG, "Can't create \".nomedia\" file in application external cache directory");
+                Log.i("StorageUtils", "Can't create \".nomedia\" file in application external cache directory");
             }
         }
         return appCacheDir;

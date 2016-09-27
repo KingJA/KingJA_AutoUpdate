@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 /**
  * Description：TODO
@@ -21,12 +19,14 @@ import android.widget.Toast;
 public class VersionTask extends AsyncTask<String, Integer, Integer> {
     private Activity context;
     private boolean cancleable;
+    private boolean showDownloadDialog;
     private ProgressBar mPb;
     private Dialog mDownloadDialog;
 
-    public VersionTask(Activity context, boolean cancleable) {
+    public VersionTask(Activity context, boolean updateCancleable,boolean showDownloadDialog) {
         this.context = context;
-        this.cancleable = cancleable;
+        this.cancleable = updateCancleable;
+        this.showDownloadDialog = showDownloadDialog;
     }
 
     /**
@@ -44,7 +44,7 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
      */
     @Override
     protected Integer doInBackground(String... params) {
-        return UpdateService.getVersionCode(params[0]);
+        return WebService.getVersionCode(params[0]);
     }
 
     /**
@@ -72,8 +72,7 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Toast.makeText(context,"进入后台更新",Toast.LENGTH_SHORT).show();
-              DownloadService.goService(context);
+             new DownloadTask(context,showDownloadDialog).execute();
             }
         });
         if (cancleable) {

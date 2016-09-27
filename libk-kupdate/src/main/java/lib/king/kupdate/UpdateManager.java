@@ -10,21 +10,24 @@ import android.app.Activity;
  */
 public class UpdateManager {
     private boolean cancleable;
+    private boolean showDownloadDialog;
     private Activity activity;
 
     public UpdateManager(Builder builder) {
+        this.showDownloadDialog = builder.showDownloadDialog;
         this.cancleable = builder.cancleable;
         this.activity = builder.activity;
     }
 
     public void checkUpdate() {
-        VersionTask versionTask = new VersionTask(activity,cancleable);
+        VersionTask versionTask = new VersionTask(activity,cancleable,showDownloadDialog);
         versionTask.execute(Constants.APK_NAME);
     }
 
     public static class Builder {
         private Activity activity;
         private boolean cancleable;
+        private boolean showDownloadDialog;
 
         public Builder(Activity activity) {
             this.activity = activity;
@@ -32,6 +35,10 @@ public class UpdateManager {
 
         public Builder setCancleable(boolean cancleable) {
             this.cancleable = cancleable;
+            return this;
+        }
+        public Builder setShowDownloadDialog(boolean showDownloadDialog) {
+            this.showDownloadDialog = showDownloadDialog;
             return this;
         }
 
