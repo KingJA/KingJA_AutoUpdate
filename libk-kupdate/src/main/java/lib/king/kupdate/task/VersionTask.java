@@ -1,9 +1,6 @@
 package lib.king.kupdate.task;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 

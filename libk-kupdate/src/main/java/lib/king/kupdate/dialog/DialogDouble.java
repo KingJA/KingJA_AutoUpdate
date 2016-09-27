@@ -10,14 +10,12 @@ import lib.king.kupdate.R;
 
 
 public class DialogDouble extends DialogBaseAlert {
-    private Context context;
     private String message;
     private TextView tv_doubledialog_message;
     private RelativeLayout rl_doubledialog_left;
     private RelativeLayout rl_doubledialog_right;
     private TextView tv_doubledialog_left;
     private TextView tv_doubledialog_right;
-    private String title;
     private String leftString;
     private String rightString;
     private OnDoubleClickListener onDoubleClickListener;
