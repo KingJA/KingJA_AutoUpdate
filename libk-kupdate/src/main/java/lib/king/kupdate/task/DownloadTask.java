@@ -1,16 +1,11 @@
 package lib.king.kupdate.task;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.File;
@@ -21,8 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import lib.king.kupdate.Constants;
-import lib.king.kupdate.R;
 import lib.king.kupdate.Util;
+import lib.king.kupdate.dialog.DialogProgress;
 
 /**
  * Description：TODO
@@ -33,8 +28,7 @@ import lib.king.kupdate.Util;
 public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务执行的输入参数、后台任务执行的进度、后台计算结果的类型
     private Activity context;
     private boolean showDownloadDialog;
-    private ProgressBar mProgressBar;
-    private Dialog mDownloadDialog;
+    private DialogProgress mDownloadDialog;
     private static final int BUFFER_SIZE = 10 * 1024;
     private String TAG=getClass().getSimpleName();
     private File apkFile;
@@ -118,7 +112,7 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        mProgressBar.setProgress(values[0]);
+        mDownloadDialog.setProgress(values[0]);
     }
 
     @Override
@@ -136,13 +130,7 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务
     }
 
     private void showDownLoadDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("正在更新");
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.progress_softupdate, null);
-        mProgressBar = (ProgressBar) v.findViewById(R.id.progress_update);
-        builder.setView(v);
-        mDownloadDialog = builder.create();
+         mDownloadDialog =  new DialogProgress(context);
         mDownloadDialog.setCanceledOnTouchOutside(true);
         mDownloadDialog.setCancelable(true);
         mDownloadDialog.show();

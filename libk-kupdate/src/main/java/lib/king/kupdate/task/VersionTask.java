@@ -69,29 +69,6 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
         dialogDouble.setCancelable(cancleable);
         dialogDouble.show();
 
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//        builder.setTitle("检测到版本更新");
-//        builder.setMessage(updateContent);
-//        builder.setPositiveButton("马上更新", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//             new DownloadTask(context,showDownloadDialog).execute();
-//            }
-//        });
-//        if (cancleable) {
-//            builder.setNegativeButton("下次", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                    System.exit(0);
-//                }
-//            });
-//        }
-//        Dialog dialog = builder.create();
-//        dialog.setCanceledOnTouchOutside(cancleable);
-//        dialog.setCancelable(cancleable);
-//        dialog.show();
     }
 
 }
