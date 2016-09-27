@@ -1,4 +1,4 @@
-package lib.king.kupdate;
+package lib.king.kupdate.task;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,9 +6,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ProgressBar;
+
+import lib.king.kupdate.Util;
+import lib.king.kupdate.strategy.LoadStrategy;
 
 /**
  * Description：TODO
@@ -20,51 +20,35 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
     private Activity context;
     private boolean cancleable;
     private boolean showDownloadDialog;
-    private ProgressBar mPb;
-    private Dialog mDownloadDialog;
+    private LoadStrategy loadStrategy;
 
-    public VersionTask(Activity context, boolean updateCancleable,boolean showDownloadDialog) {
+    public VersionTask(Activity context, boolean updateCancleable,boolean showDownloadDialog,LoadStrategy loadStrategy) {
         this.context = context;
         this.cancleable = updateCancleable;
         this.showDownloadDialog = showDownloadDialog;
+        this.loadStrategy = loadStrategy;
     }
 
-    /**
-     * execute调用时首先执行
-     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
     }
 
-    /**
-     * 后台任务
-     * @param params
-     * @return
-     */
     @Override
     protected Integer doInBackground(String... params) {
-        return WebService.getVersionCode(params[0]);
+        return loadStrategy.getVersionCode(params[0]);
     }
 
-    /**
-     * doInBackground执行完调用
-     * @param i doInBackground的返回值
-     */
     @Override
     protected void onPostExecute(Integer i) {
         super.onPostExecute(i);
-        if (UpdateUtil.ifNeedUpdate(i, context)) {
+        if (Util.ifNeedUpdate(i, context)) {
             Log.e("onPostExecute", "需要更新: ");
             showAskDialog();
         }
     }
 
-    /**
-     * 显示下载对话框
-     */
     private void showAskDialog() {
-        //构造对话框
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("软件版本更新");
         builder.setMessage("检测到新版本，是否立即进行更新?");
@@ -84,27 +68,10 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
                 }
             });
         }
-
         Dialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);//dialog弹出后会点击屏幕，dialog不消失；点击物理返回键dialog消失
-        dialog.setCancelable(false);//dialog弹出后会点击屏幕或物理返回键，dialog不消失
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
     }
 
-    /**
-     * 显示软件下载对话框
-     */
-    private void showDownLoadDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("正在更新");
-        //给下载对话框增加进度条
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.progress_softupdate, null);
-        mPb = (ProgressBar) v.findViewById(R.id.progress_update);
-        builder.setView(v);
-        mDownloadDialog = builder.create();
-        mDownloadDialog.setCanceledOnTouchOutside(false);
-        mDownloadDialog.setCancelable(false);
-        mDownloadDialog.show();
-    }
 }

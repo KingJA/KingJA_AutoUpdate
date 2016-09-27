@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import lib.king.kupdate.UpdateManager;
+import lib.king.kupdate.strategy.WebService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
         UpdateManager.Builder builder = new UpdateManager.Builder(this);
         builder.setCancleable(false)
                 .setShowDownloadDialog(true)
+                .setLoadStrategy(new WebService())
                 .build()
                 .checkUpdate();
     }

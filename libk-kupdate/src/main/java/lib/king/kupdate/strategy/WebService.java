@@ -1,4 +1,4 @@
-package lib.king.kupdate;
+package lib.king.kupdate.strategy;
 
 import android.util.Log;
 
@@ -9,10 +9,13 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-public class WebService {
+import lib.king.kupdate.Constants;
+import lib.king.kupdate.strategy.LoadStrategy;
 
-	public static int getVersionCode(String fileName) {
-		int versionCode=-1;
+public class WebService implements LoadStrategy{
+	@Override
+	public int getVersionCode(String fileName) {
+				int versionCode=-1;
 		SoapObject request = new SoapObject(Constants.WEBSERVER_NAMESPACE,
 				Constants.METHOD);
 		request.addProperty(Constants.FILE_NAME, fileName);
@@ -35,5 +38,6 @@ public class WebService {
 		}
 		return versionCode;
 	}
+
 
 }

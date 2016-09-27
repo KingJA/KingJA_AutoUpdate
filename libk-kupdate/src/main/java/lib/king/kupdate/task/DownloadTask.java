@@ -1,4 +1,4 @@
-package lib.king.kupdate;
+package lib.king.kupdate.task;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import lib.king.kupdate.Constants;
+import lib.king.kupdate.R;
+import lib.king.kupdate.Util;
 
 /**
  * Description：TODO
@@ -68,7 +72,7 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务
             long bytesum = 0;
             int byteread = 0;
             in = urlConnection.getInputStream();
-            File dir = StorageUtils.getCacheDirectory(context);
+            File dir = Util.getCacheDirectory(context);
             String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1, urlStr.length());
             apkFile = new File(dir, apkName);
             out = new FileOutputStream(apkFile);

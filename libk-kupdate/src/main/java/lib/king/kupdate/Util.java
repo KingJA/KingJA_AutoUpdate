@@ -1,21 +1,7 @@
-/*******************************************************************************
- * Copyright 2011-2013 Sergey Tarasevich
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
 package lib.king.kupdate;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.util.Log;
@@ -26,27 +12,35 @@ import java.io.IOException;
 import static android.os.Environment.MEDIA_MOUNTED;
 
 /**
- * Provides application storage paths
- *
- * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
- * @since 1.0.0
+ * 项目名称：物联网城市防控(警用版)
+ * 类描述：TODO
+ * 创建人：KingJA
+ * 创建时间：2016/4/1 14:56
+ * 修改备注：
  */
-final class StorageUtils {
-
+public class Util {
     private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
 
-    private StorageUtils() {
-
+    private static PackageInfo getAppInfo(Context context) {
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return packageInfo;
     }
 
-    /**
-     * Returns application cache directory. Cache directory will be created on SD card
-     * <i>("/Android/data/[app_package_name]/cache")</i> if card is mounted and app has appropriate permission. Else -
-     * Android defines cache directory on device's file system.
-     *
-     * @param context Application context
-     * @return Cache {@link File directory}
-     */
+    public static int getVersionCode( Context context) {
+        return getAppInfo(context).versionCode;
+    }
+
+    public static boolean ifNeedUpdate(int versionCode,Context context) {
+        return versionCode>getVersionCode(context);
+    }
+
+
     public static File getCacheDirectory(Context context) {
         File appCacheDir = null;
         if (MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
@@ -83,4 +77,5 @@ final class StorageUtils {
         int perm = context.checkCallingOrSelfPermission(EXTERNAL_STORAGE_PERMISSION);
         return perm == PackageManager.PERMISSION_GRANTED;
     }
+
 }
