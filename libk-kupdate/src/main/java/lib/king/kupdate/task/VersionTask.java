@@ -69,8 +69,8 @@ public class VersionTask extends AsyncTask<String, Integer, Integer> {
             });
         }
         Dialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(cancleable);
+        dialog.setCancelable(cancleable);
         dialog.show();
     }
 

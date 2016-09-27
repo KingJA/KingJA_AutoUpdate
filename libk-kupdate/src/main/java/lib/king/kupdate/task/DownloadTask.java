@@ -3,6 +3,7 @@ package lib.king.kupdate.task;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -141,9 +143,15 @@ public class DownloadTask extends AsyncTask<Void, Integer, Void> {//启动任务
         mProgressBar = (ProgressBar) v.findViewById(R.id.progress_update);
         builder.setView(v);
         mDownloadDialog = builder.create();
-        mDownloadDialog.setCanceledOnTouchOutside(false);
-        mDownloadDialog.setCancelable(false);
+        mDownloadDialog.setCanceledOnTouchOutside(true);
+        mDownloadDialog.setCancelable(true);
         mDownloadDialog.show();
+        mDownloadDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Toast.makeText(context,"进入后台下载",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     private void installAPk(File apkFile) {
         Intent intent = new Intent(Intent.ACTION_VIEW);

@@ -7,7 +7,7 @@ package lib.king.kupdate;
  * Email:kingjavip@gmail.com
  */
 public class Constants {
-    public static final String APK_NAME = "FamilyTreasure.apk";// 获取版本号Webservice方法
+    public static final String APK_NAME = "WisdomE.apk";// 获取版本号Webservice方法
 
 /*========================================WebService========================================*/
     public static final String WEBSERVER_NAMESPACE = "http://tempuri.org/";// 命名空间

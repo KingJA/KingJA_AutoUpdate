@@ -40,7 +40,6 @@ public class Util {
         return versionCode>getVersionCode(context);
     }
 
-
     public static File getCacheDirectory(Context context) {
         File appCacheDir = null;
         if (MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) && hasExternalStoragePermission(context)) {
@@ -61,13 +60,11 @@ public class Util {
         File appCacheDir = new File(new File(dataDir, context.getPackageName()), "cache");
         if (!appCacheDir.exists()) {
             if (!appCacheDir.mkdirs()) {
-                Log.w("StorageUtils", "Unable to create external cache directory");
                 return null;
             }
             try {
                 new File(appCacheDir, ".nomedia").createNewFile();
             } catch (IOException e) {
-                Log.i("StorageUtils", "Can't create \".nomedia\" file in application external cache directory");
             }
         }
         return appCacheDir;
